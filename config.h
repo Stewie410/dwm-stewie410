@@ -55,7 +55,7 @@ static const Layout layouts[] = {
     { "===",      bstackhoriz },            /* Horizontal BStack */
     { "[@]",      spiral },                 /* Fibonacci Spiral */
     { "[\\]",     dwindle },                /* Decreasing Size right & leftward */
-//    { "H[]",      deck },                   /* Left-Master, Monocle-Right-Stack */
+    { "H[]",      deck },                   /* Left-Master, Monocle-Right-Stack */
     { "[M]",      monocle },                /* All windows on top (monocle) */
     { "|M|",      centeredmaster },         /* Center-Master, Left/Right-Stack */
     { ">M>",      centeredfloatingmaster }, /* Floating-Center-Master, Left/Right-Stack */

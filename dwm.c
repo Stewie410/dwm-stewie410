@@ -149,6 +149,10 @@ static void arrangemon(Monitor *m);
 static void attach(Client *c);
 static void attachstack(Client *c);
 static void buttonpress(XEvent *e);
+static void bstack(Monitor *m);
+static void bstackhoriz(Monitor *m);
+static void centeredmaster(Monitor *m);
+static void centeredfloatingmaster(Monitor *m);
 static void checkotherwm(void);
 static void cleanup(void);
 static void cleanupmon(Monitor *mon);
@@ -158,6 +162,7 @@ static void configurenotify(XEvent *e);
 static void configurerequest(XEvent *e);
 static Monitor *createmon(void);
 static void cyclelayout(const Arg *arg);
+static void deck(Monitor *m);
 static void destroynotify(XEvent *e);
 static void detach(Client *c);
 static void detachstack(Client *c);
@@ -235,10 +240,6 @@ static int xerror(Display *dpy, XErrorEvent *ee);
 static int xerrordummy(Display *dpy, XErrorEvent *ee);
 static int xerrorstart(Display *dpy, XErrorEvent *ee);
 static void zoom(const Arg *arg);
-static void bstack(Monitor *m);
-static void bstackhoriz(Monitor *m);
-static void centeredmaster(Monitor *m);
-static void centeredfloatingmaster(Monitor *m);
 
 /* variables */
 static const char broken[] = "broken";
@@ -670,6 +671,31 @@ cyclelayout(const Arg *arg) {
 		else
 			setlayout(&((Arg) { .v = &layouts[LENGTH(layouts) - 2] }));
 	}
+}
+
+void
+deck(Monitor *m) {
+	unsigned int i, n, h, mw, my;
+	Client *c;
+
+	for(n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
+	if(n == 0)
+		return;
+
+	if(n > m->nmaster) {
+		mw = m->nmaster ? m->ww * m->mfact : 0;
+		snprintf(m->ltsymbol, sizeof m->ltsymbol, "[%d]", n - m->nmaster);
+	}
+	else
+		mw = m->ww;
+	for(i = my = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
+		if(i < m->nmaster) {
+			h = (m->wh - my) / (MIN(n, m->nmaster) - i);
+			resize(c, m->wx, m->wy + my, mw - (2*c->bw), h - (2*c->bw), False);
+			my += HEIGHT(c);
+		}
+		else
+			resize(c, m->wx + mw, m->wy, m->ww - mw - (2*c->bw), m->wh - (2*c->bw), False);
 }
 
 void
@@ -1713,7 +1739,7 @@ tile(Monitor *m)
 	for (i = my = ty = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
 		if (i < m->nmaster) {
 			h = (m->wh - my) / (MIN(n, m->nmaster) - i);
-			resize(c, m->wx, m->wy + my, mw - (2*c->bw), h - (2*c->bw), 0);
+            resize(c, m->wx, m->wy + my, mw - (2*c->bw), h - (2*c->bw), 0);
 			if (my + HEIGHT(c) < m->wh)
 				my += HEIGHT(c);
 		} else {
