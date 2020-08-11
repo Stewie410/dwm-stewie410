@@ -49,19 +49,28 @@ static const int resizehints = 1;    /* 1 means respect size hints in tiled resi
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "[]=",      tile },    /* first entry is default */
-    { "|||",      tcl },     /* Triple Column Layout */
-	{ "><>",      NULL },    /* no layout function means floating behavior */
-	{ "[M]",      monocle },
+    { "[]=",      tile },                   /* Left-Master, Right-Stack */
+    { "|||",      tcl },                    /* Triple Column Layout */
+    { "TTT",      bstack },                 /* Top-Master, Bottom-Stack */
+    { "===",      bstackhoriz },            /* Horizontal BStack */
+    { "[@]",      spiral },                 /* Fibonacci Spiral */
+    { "[\\]",     dwindle },                /* Decreasing Size right & leftward */
+//    { "H[]",      deck },                   /* Left-Master, Monocle-Right-Stack */
+    { "[M]",      monocle },                /* All windows on top (monocle) */
+    { "|M|",      centeredmaster },         /* Center-Master, Left/Right-Stack */
+    { ">M>",      centeredfloatingmaster }, /* Floating-Center-Master, Left/Right-Stack */
+    { "><>",      NULL },                   /* Floating */
+    { NULL,       NULL },                   /* Empty */
 };
 
 /* key definitions */
 #define MODKEY Mod1Mask
+//#define SUPKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
 	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
-	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
+	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} }, \
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
@@ -85,9 +94,11 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
-	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
+//	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
+//	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
+//	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
+    { MODKEY,                       XK_backslash, cyclelayout, {.i = +1} },
+    { MODKEY|ShiftMask,             XK_backslash, cyclelayout, {.i = -1} },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
@@ -107,6 +118,26 @@ static Key keys[] = {
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_Escape,  quit,           {0} },
 };
+
+/*
+ * Things to bring in from i3
+ *
+ * Mod == Mod1 (Alt)
+ * Sup == Mod4 (Win)
+ *
+ * Mod+Shift+j              Push master into stack
+ * Mod+Shift+k              Push stack into master
+ *
+ * Mod+Shift+F11            Toggle Fullscreen
+ * Mod+Shift+Backslash      Cycle Layouts
+ *
+ * Sup+Return               Show Scratchpad
+ * Sup+Shift+Return         Move application to Scratchpad
+ *
+ * Mod+Shift+r              Restart dwm
+ *
+ * Function-Keys            Various Functions
+ */
 
 /* button definitions */
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
