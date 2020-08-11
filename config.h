@@ -8,6 +8,7 @@ static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
+static const int user_bh            = 0;        /* 0: dwm calculates; >=1: user user_bh */
 //static const char *fonts[]          = { "monospace:size=10" };
 static const char *fonts[]          = {
     "DejaVuSans-Regular:fontformat=true:pixelsize=10:antialias=true",
