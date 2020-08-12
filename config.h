@@ -60,7 +60,7 @@ static const Layout layouts[] = {
     { "[]=", tile },
 
     // Three Column                 Center:Master       LeftRight:Stack
-    { "TCL", tcl },
+    //{ "TCL", tcl },
 
     // BStack                       Top:Master          Bottom:Stack (vert split)
     // BStackHoriz                  Top:Master          Bottom:Stack (horiz split)
