@@ -1,11 +1,13 @@
 /* See LICENSE file for copyright and license details. */
 
-#include "tcl.c"
-#include "fibonacci.c"
-
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
+static const unsigned int gappih    = 5;        /* horiz inner gap between windows */
+static const unsigned int gappiv    = 5;        /* vert inner gap between windows */
+static const unsigned int gappoh    = 5;        /* horiz outer gap between windows & edge */
+static const unsigned int gappov    = 5;        /* vert outer gap between windows & edge */
+static const unsigned int smartgaps = 1;        /* 1 means no outer gap w/ single window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int user_bh            = 0;        /* 0: dwm calculates; >=1: user user_bh */
@@ -44,29 +46,52 @@ static const Rule rules[] = {
 };
 
 /* layout(s) */
-static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
+static const float mfact     = 0.50; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 
+#define FORCE_VSPLIT 1 /* nrowgrid layout: force two clients to always split vertically */
+#include "tcl.c"
+//#include "fibonacci.c"
+#include "vanitygaps.c"
+
 static const Layout layouts[] = {
-	/* symbol     arrange function */
-    { "[]=",      tile },                   /* Left-Master, Right-Stack */
-    { "|||",      tcl },                    /* Triple Column Layout */
-    { "TTT",      bstack },                 /* Top-Master, Bottom-Stack */
-    { "===",      bstackhoriz },            /* Horizontal BStack */
-    { "[@]",      spiral },                 /* Fibonacci Spiral */
-    { "[\\]",     dwindle },                /* Decreasing Size right & leftward */
-    { "H[]",      deck },                   /* Left-Master, Monocle-Right-Stack */
-    { "[M]",      monocle },                /* All windows on top (monocle) */
-    { "|M|",      centeredmaster },         /* Center-Master, Left/Right-Stack */
-    { ">M>",      centeredfloatingmaster }, /* Floating-Center-Master, Left/Right-Stack */
-    { "><>",      NULL },                   /* Floating */
-    { NULL,       NULL },                   /* Empty */
+    // Master-Stack                 Left:Master         Right:Stack
+    { "[]=", tile },
+
+    // Three Column                 Center:Master       LeftRight:Stack
+    { "TCL", tcl },
+
+    // BStack                       Top:Master          Bottom:Stack (vert split)
+    // BStackHoriz                  Top:Master          Bottom:Stack (horiz split)
+    { "BSV", bstack },
+    { "BSH", bstackhoriz },
+
+    // Spiral                       Left:Master         Right:Stack (fibonacci spiral)
+    // Dwindle                      Left:Master         Right:Stack (spiral down-right)
+    { "FIB", spiral },
+    { "DWI", dwindle },
+
+    // Deck                         Left:Master         Right:Stack (monocle)
+    { "DEK", deck },
+
+    // Monocle                      Fullscreen:Master-Stack // Layout switch cycles masters before continuing
+    { "[M]", monocle },
+
+    // Centered Master              Center:Master       LeftRight:Stack
+    // Centered Floating Master     Center:Master(F)    LeftRight:Stack
+    { "CTM", centeredmaster },
+    { "CFM", centeredfloatingmaster },
+
+    // Floating                     Fullscreen:Master-Stack(F)
+    { "FLT", NULL },
+
+    // Terminate/Return to layouts[0]
+    { NULL, NULL },
 };
 
 /* key definitions */
 #define MODKEY Mod1Mask
-//#define SUPKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -81,33 +106,64 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "alacritty", NULL };
 
+#include <X11/XF86keysym.h>
+
 static Key keys[] = {
-	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
+    // Application Hotkeys
+	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
     { MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
+    { MODKEY,                       XK_F2,     spawn,          SHCMD("firefox") },
+    { MODKEY,                       XK_F3,     spawn,          SHCMD("alacritty -e ranger ~/") },
+    { MODKEY,                       XK_F8,     spawn,          SHCMD("thunderbird") },
+    { 0,                            XK_Print,  spawn,          SHCMD("autoscrot.sh") },
+
+    // Toggle Panel
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
+
+    // Stack
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
-	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
+    { MODKEY|ShiftMask,             XK_j,      incnmaster,     {.i = -1 } },
+
+    { MODKEY|ShiftMask,             XK_k,      incnmaster,     {.i = +1 } },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
 	{ MODKEY|ShiftMask,             XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
-	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
-//	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
-//	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
-//	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
+
+    // Gaps
+    /* all-gaps                     incrgaps
+     * toggle                       togglegaps
+     * reset                        defaultgaps
+     * inner/outer all              incrigaps/incrogaps
+     * inner/outer horiz            incrihgaps/incrohgaps
+     * inner/outer vert             incrivgaps/incrovgaps
+     */
+    { MODKEY|Mod4Mask,              XK_h,      incrgaps,       {.i = +1 } },
+    { MODKEY|Mod4Mask,              XK_l,      incrgaps,       {.i = -1 } },
+    { MODKEY|Mod4Mask,              XK_g,      togglegaps,     {0} },
+    { MODKEY|Mod4Mask|ShiftMask,    XK_g,      defaultgaps,    {0} },
+
+    // Kill
+	{ MODKEY|ShiftMask,             XK_q,      killclient,     {0} },
+
+    // Layouts
     { MODKEY,                       XK_backslash, cyclelayout, {.i = +1} },
     { MODKEY|ShiftMask,             XK_backslash, cyclelayout, {.i = -1} },
-	{ MODKEY,                       XK_space,  setlayout,      {0} },
+
+    // Floating
+	//{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
+
+    // Monitors
 	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+
+    // Tags
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
@@ -117,7 +173,25 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
+
+    // Exit
 	{ MODKEY|ShiftMask,             XK_Escape,  quit,           {0} },
+
+    // Media
+    { 0, XF86XK_AudioMute,          spawn, SHCMD("pamixer --toggle-mute") },
+    { 0, XF86XK_AudioLowerVolume,   spawn, SHCMD("pamixer --decrease 1") },
+    { 0, XF86XK_AudioRaiseVolume,   spawn, SHCMD("pamixer --increase 1") },
+    { 0, XF86XK_AudioPrev,          spawn, SHCMD("playerctl previous") },
+    { 0, XF86XK_AudioPlay,          spawn, SHCMD("playerctl play-pause") },
+    { 0, XF86XK_AudioNext,          spawn, SHCMD("playerctl next") },
+
+    // Brightness
+    { 0, XF86XK_MonBrightnessDown,  spawn, SHCMD("xbrightness.sh --decrease 5") },
+    { 0, XF86XK_MonBrightnessUp,    spawn, SHCMD("xbrightness.sh --increase 5") },
+
+    // Various
+    //{ 0, XF86XK_Search, NULL, NULL },
+    //{ 0, XF86XK_RFKill, NULL, NULL },
 };
 
 /*
