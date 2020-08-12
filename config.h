@@ -48,6 +48,20 @@ static const char *colors[][3]      = {
     [SchemeInfoNorm] = { col_gray3, col_gray1,  "#000000" },    // Default
 };
 
+// Autostart Applications
+static const char *const autostart[] = {
+    "hsetroot -solid #000000 &", NULL,
+    "nitrogen --restore &", NULL,
+    //"compton-launch.sh &", NULL,
+    //"unclutter --jitter 50 &", NULL,
+    //"/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &", NULL,
+    //"xautolock -time 60 -detectsleep -locker lockSession.sh &", NULL,
+    //"dunst &", NULL,
+    //"kdeconnectd &", NULL,
+    //"kdeconnect-indicator &", NULL,
+    NULL // terminate
+};
+
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
