@@ -29,14 +29,23 @@ static const char col_cyan[]        = "#005577";
 static const char col_urgborder[]   = "#ff0000";
 static const char *colors[][3]      = {
 	/*                   fg         bg          border   */
-	[SchemeNorm]     = { col_gray3, col_gray1,  col_gray2 },
+	// Default Schemes
+    [SchemeNorm]     = { col_gray3, col_gray1,  col_gray2 },
 	[SchemeSel]      = { col_gray4, col_cyan,   col_cyan  },
+
+    // Urgent Border
     [SchemeUrg]      = { col_gray4, col_cyan,   col_urgborder },
-    [SchemeStatus]   = { col_gray3, col_gray1,  "#ff0000" }, // Statusbar right
-    [SchemeTagsSel]  = { col_gray4, col_cyan,   "#00ff00" }, // Tagbar Left Selected
-    [SchemeTagsNorm] = { col_gray3, col_gray1,  "#0000ff" }, // Tagbar Left Unselected
-    [SchemeInfoSel]  = { col_gray4, col_cyan,   "#ffff00" }, // Infobar Middle Selected
-    [SchemeInfoNorm] = { col_gray3, col_gray1,  "#00ffff" }, //Infobar Middle Unselected
+
+    // Status
+    [SchemeStatus]   = { col_gray3, col_gray1,  "#000000" },
+
+    // Tagbar
+    [SchemeTagsSel]  = { col_gray4, col_cyan,   "#000000" },    // Layout
+    [SchemeTagsNorm] = { col_gray3, col_gray1,  "#000000" },    // Tags
+
+    // Infobar
+    [SchemeInfoSel]  = { col_gray4, col_cyan,   "#000000" },    // Win Selected
+    [SchemeInfoNorm] = { col_gray3, col_gray1,  "#000000" },    // Default
 };
 
 /* tagging */
