@@ -52,11 +52,11 @@ static const char *colors[][3]      = {
 static const char *const autostart[] = {
     "hsetroot", "-solid", "#000000", NULL,
     "nitrogen", "--restore", NULL,
-    //"compton-launch.sh", NULL,
+    "picom", NULL,
     "unclutter", "--jitter", "50", NULL,
     "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1", NULL,
     "xautolock", "-time", "60", "-detectsleep", "-locker", "lockSession.sh", NULL,
-    //"dunst", NULL,
+    "dunst", NULL,
     //"kdeconnect", NULL,
     //"kdeconnect-indicator", NULL,
     NULL // terminate
