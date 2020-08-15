@@ -3,16 +3,16 @@
 /* appearance */
 static const unsigned int borderpx          = 1;    /* border pixel of windows */
 static const unsigned int snap              = 32;   /* snap pixel */
-static const int swallowfloating            = 0;    /* 1: swallow floating by default */
 static const unsigned int systraypinning    = 0;    /* Pin systray to monitor X; 0: sloppy */
 static const unsigned int systrayspacing    = 2;    /* systray spacing */
-static const int systraypinningfailfirst    = 1;    /* 1: first monitor; False: last monitor */
-static const int showsystray                = 1;    /* 0: no systtray */
 static const unsigned int gappih            = 5;    /* horiz inner gap between windows */
 static const unsigned int gappiv            = 5;    /* vert inner gap between windows */
 static const unsigned int gappoh            = 5;    /* horiz outer gap between windows & edge */
 static const unsigned int gappov            = 5;    /* vert outer gap between windows & edge */
 static const unsigned int smartgaps         = 1;    /* 1 means no outer gap w/ single window */
+static const int systraypinningfailfirst    = 1;    /* 1: first monitor; False: last monitor */
+static const int showsystray                = 1;    /* 0: no systtray */
+static const int swallowfloating            = 0;    /* 1: swallow floating by default */
 static const int showbar                    = 1;    /* 0 means no bar */
 static const int topbar                     = 1;    /* 0 means bottom bar */
 static const int user_bh                    = 0;    /* 0: dwm calculates; >=1: user user_bh */
@@ -247,7 +247,9 @@ static Button buttons[] = {
 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
+    { ClkStatusText,        0,              Button1,        sigdwmblocks,   {.i = 1} },
+    { ClkStatusText,        0,              Button2,        sigdwmblocks,   {.i = 2} },
+    { ClkStatusText,        0,              Button3,        sigdwmblocks,   {.i = 3} },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
