@@ -1,18 +1,22 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
-static const unsigned int snap      = 32;       /* snap pixel */
-static const unsigned int gappih    = 5;        /* horiz inner gap between windows */
-static const unsigned int gappiv    = 5;        /* vert inner gap between windows */
-static const unsigned int gappoh    = 5;        /* horiz outer gap between windows & edge */
-static const unsigned int gappov    = 5;        /* vert outer gap between windows & edge */
-static const unsigned int smartgaps = 1;        /* 1 means no outer gap w/ single window */
-static const int showbar            = 1;        /* 0 means no bar */
-static const int topbar             = 1;        /* 0 means bottom bar */
-static const int user_bh            = 0;        /* 0: dwm calculates; >=1: user user_bh */
-//static const char *fonts[]          = { "monospace:size=10" };
-static const char *fonts[]          = {
+static const unsigned int borderpx          = 1;    /* border pixel of windows */
+static const unsigned int snap              = 32;   /* snap pixel */
+static const unsigned int systraypinning    = 0;    /* Pin systray to monitor X; 0: sloppy */
+static const unsigned int systrayspacing    = 2;    /* systray spacing */
+static const int systraypinningfailfirst    = 1;    /* 1: first monitor; False: last monitor */
+static const int showsystray                = 1;    /* 0: no systtray */
+static const unsigned int gappih            = 5;    /* horiz inner gap between windows */
+static const unsigned int gappiv            = 5;    /* vert inner gap between windows */
+static const unsigned int gappoh            = 5;    /* horiz outer gap between windows & edge */
+static const unsigned int gappov            = 5;    /* vert outer gap between windows & edge */
+static const unsigned int smartgaps         = 1;    /* 1 means no outer gap w/ single window */
+static const int showbar                    = 1;    /* 0 means no bar */
+static const int topbar                     = 1;    /* 0 means bottom bar */
+static const int user_bh                    = 0;    /* 0: dwm calculates; >=1: user user_bh */
+//static const char *fonts[]                = { "monospace:size=10" };
+static const char *fonts[]                  = {
     "DejaVuSans-Regular:fontformat=true:pixelsize=10:antialias=true",
     "monospace:size=10",
     "unifont:fontformat=true:size=10:antialias=false",
