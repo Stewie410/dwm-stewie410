@@ -3,6 +3,7 @@
 /* appearance */
 static const unsigned int borderpx          = 1;    /* border pixel of windows */
 static const unsigned int snap              = 32;   /* snap pixel */
+static const int swallowfloating            = 0;    /* 1: swallow floating by default */
 static const unsigned int systraypinning    = 0;    /* Pin systray to monitor X; 0: sloppy */
 static const unsigned int systrayspacing    = 2;    /* systray spacing */
 static const int systraypinningfailfirst    = 1;    /* 1: first monitor; False: last monitor */
@@ -60,9 +61,11 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     iscentered      isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            0,              1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,              0,           -1 },
+    // class        instance,   title,          tag,    float,  term,   noswallow,  monitor
+    { "Gimp",       NULL,       NULL,           0,      0,      0,      0,          -1 },
+    { "Firefox",    NULL,       NULL,           1 << 8, 0,      0,      -1,         -1 },
+    { "Alacritty",  NULL,       NULL,           0,      0,      1,      0,          -1 },
+    { NULL,         NULL,       "Event Tester", 0,      0,      0,      1,          -1 },
 };
 
 /* layout(s) */
