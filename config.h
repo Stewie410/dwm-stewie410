@@ -108,6 +108,7 @@ static const Layout layouts[] = {
 
 /* key definitions */
 #define MODKEY Mod1Mask
+#define SUPKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -155,10 +156,10 @@ static Key keys[] = {
      * inner/outer horiz            incrihgaps/incrohgaps
      * inner/outer vert             incrivgaps/incrovgaps
      */
-    { MODKEY|Mod4Mask,              XK_h,      incrgaps,       {.i = +1 } },
-    { MODKEY|Mod4Mask,              XK_l,      incrgaps,       {.i = -1 } },
-    { MODKEY|Mod4Mask,              XK_g,      togglegaps,     {0} },
-    { MODKEY|Mod4Mask|ShiftMask,    XK_g,      defaultgaps,    {0} },
+    { MODKEY|SUPKEY,                XK_h,      incrgaps,       {.i = +1 } },
+    { MODKEY|SUPKEY,                XK_l,      incrgaps,       {.i = -1 } },
+    { MODKEY|SUPKEY,                XK_g,      togglegaps,     {0} },
+    { MODKEY|SUPKEY|ShiftMask,      XK_g,      defaultgaps,    {0} },
 
     // Kill
 	{ MODKEY|ShiftMask,             XK_q,      killclient,     {0} },
@@ -192,7 +193,7 @@ static Key keys[] = {
 	TAGKEYS(                        XK_9,                      8)
 
     // Exit
-	{ MODKEY|ShiftMask,             XK_Escape,  quit,           {0} },
+	{ SUPKEY|ShiftMask,             XK_Escape,  quit,           {0} },
 
     // Media
     { 0, XF86XK_AudioMute,          spawn, SHCMD("pamixer --toggle-mute") },
