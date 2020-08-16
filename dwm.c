@@ -2493,7 +2493,7 @@ updatesizehints(Client *c)
 	if((size.flags & PSize) && c->isfreesize) {
 		c->basew = size.base_width;
 		c->baseh = size.base_height;
-		c->isfloating = 1;
+		c->isfloating = 0;
 	}
 	c->isfixed = (c->maxw && c->maxh && c->maxw == c->minw && c->maxh == c->minh);
 }

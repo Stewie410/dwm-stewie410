@@ -16,41 +16,60 @@ static const int swallowfloating            = 0;    /* 1: swallow floating by de
 static const int showbar                    = 1;    /* 0 means no bar */
 static const int topbar                     = 1;    /* 0 means bottom bar */
 static const int user_bh                    = 0;    /* 0: dwm calculates; >=1: user user_bh */
-//static const char *fonts[]                = { "monospace:size=10" };
 static const char *fonts[]                  = {
-    "DejaVuSans-Regular:fontformat=true:pixelsize=10:antialias=true",
-    "monospace:size=10",
-    "unifont:fontformat=true:size=10:antialias=false",
-    "siji:pixelsize=10",
-    "Font Awesome 5 Free:fontformat=true:pixelsize=9:antialias=true:style=solid",
-    "Font Awesome 5 Brands:fontformat=true:pixelsize=9:antialias=true:style=solid",
+    "DejaVuSans-Regular:fontformat=true:pixelsize=11:antialias=true;3",
+    "monospace:size=11;3",
+    "unifont:fontformat=true:size=11:antialias=false;0",
+    "siji:pixelsize=11;3",
+    "Font Awesome 5 Free:fontformat=true:pixelsize=10:antialias=true:style=solid;3",
+    "Font Awesome 5 Brands:fontformat=true:pixelsize=10:antialias=true:style=solid;3",
 };
 static const char dmenufont[]       = "Fira Code Regular:fontformat=true:pixelsize=10:antialias=true";
+
+/* Colorschemes */
+static const char col_black[]       = "#292d3e";
+static const char col_red[]         = "#f07178";
+static const char col_green[]       = "#c3e88d";
+static const char col_yellow[]      = "#ffcb6b";
+static const char col_blue[]        = "#89aaff";
+static const char col_purple[]      = "#c792ea";
+static const char col_cyan[]        = "#89ddff";
+static const char col_white[]       = "#d0d0d0";
+static const char col_lblack[]      = "#434758";
+static const char col_lred[]        = "#ff8b92";
+static const char col_lgreen[]      = "#ddffa7";
+static const char col_lyellow[]     = "#ffe585";
+static const char col_lblue[]       = "#9cc4ff";
+static const char col_lpurple[]     = "#e1acff";
+static const char col_lcyan[]       = "#a3f7ff";
+static const char col_lwhite[]      = "#ffffff";
+
+/* Colors */
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
+//static const char col_cyan[]        = "#005577";
 static const char col_urgborder[]   = "#ff0000";
 static const char *colors[][3]      = {
 	/*                   fg         bg          border   */
 	// Default Schemes
-    [SchemeNorm]     = { col_gray3, col_gray1,  col_gray2 },
-	[SchemeSel]      = { col_gray4, col_cyan,   col_cyan  },
+    [SchemeNorm]     = { col_lwhite, col_black,  col_black },
+	[SchemeSel]      = { col_yellow, col_lblack,   col_cyan  },
 
     // Urgent Border
-    [SchemeUrg]      = { col_gray4, col_cyan,   col_urgborder },
+    [SchemeUrg]      = { col_black, col_red,    col_lred },
 
     // Status
-    [SchemeStatus]   = { col_gray3, col_gray1,  "#000000" },
+    [SchemeStatus]   = { col_lwhite, col_black, "#000000" },
 
     // Tagbar
-    [SchemeTagsSel]  = { col_gray4, col_cyan,   "#000000" },    // Layout
-    [SchemeTagsNorm] = { col_gray3, col_gray1,  "#000000" },    // Tags
+    [SchemeTagsSel]  = { col_yellow, col_lblack, "#000000" },    // Layout
+    [SchemeTagsNorm] = { col_lwhite, col_black,  "#000000" },    // Tags
 
     // Infobar
-    [SchemeInfoSel]  = { col_gray4, col_cyan,   "#000000" },    // Win Selected
-    [SchemeInfoNorm] = { col_gray3, col_gray1,  "#000000" },    // Default
+    [SchemeInfoSel]  = { col_lgreen, col_black,  "#000000" },    // Win Selected
+    [SchemeInfoNorm] = { col_lwhite, col_black,  "#000000" },    // Default
 };
 
 /* tagging */
@@ -61,11 +80,12 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-    // class        instance,   title,          tag,    float,  term,   noswallow,  monitor
-    { "Gimp",       NULL,       NULL,           0,      0,      0,      0,          -1 },
-    { "Firefox",    NULL,       NULL,           1 << 8, 0,      0,      -1,         -1 },
-    { "Alacritty",  NULL,       NULL,           0,      0,      1,      0,          -1 },
-    { NULL,         NULL,       "Event Tester", 0,      0,      0,      1,          -1 },
+    // class        instance,   title,          tag,    center  float,  term,   noswallow,  monitor
+    { "Gimp",       NULL,       NULL,           0,      0,      0,      0,      0,          -1 },
+    { "Firefox",    NULL,       NULL,           1 << 8, 0,      0,      0,      1,          -1 },
+    { "Alacritty",  NULL,       NULL,           0,      0,      0,      1,      0,          -1 },
+    { "St",         NULL,       NULL,           0,      0,      0,      1,      0,          -1 },
+    { NULL,         NULL,       "Event Tester", 0,      0,      0,      0,      1,          -1 },
 };
 
 /* layout(s) */
@@ -127,7 +147,7 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_black, "-nf", col_white, "-sb", col_lblack, "-sf", col_lpurple, NULL };
 static const char *termcmd[]  = { "alacritty", NULL };
 
 #include <X11/XF86keysym.h>
@@ -204,12 +224,12 @@ static Key keys[] = {
 	{ SUPKEY|ShiftMask,             XK_Escape,  quit,           {0} },
 
     // Media
-    { 0, XF86XK_AudioMute,          spawn, SHCMD("pamixer --toggle-mute") },
-    { 0, XF86XK_AudioLowerVolume,   spawn, SHCMD("pamixer --decrease 1") },
-    { 0, XF86XK_AudioRaiseVolume,   spawn, SHCMD("pamixer --increase 1") },
-    { 0, XF86XK_AudioPrev,          spawn, SHCMD("playerctl previous") },
-    { 0, XF86XK_AudioPlay,          spawn, SHCMD("playerctl play-pause") },
-    { 0, XF86XK_AudioNext,          spawn, SHCMD("playerctl next") },
+    { 0, XF86XK_AudioMute,          spawn, SHCMD("pamixer --toggle-mute; kill -40 $(pidof dwmblocks)") },
+    { 0, XF86XK_AudioLowerVolume,   spawn, SHCMD("pamixer --decrease 1; kill -40 $(pidof dwmblocks)") },
+    { 0, XF86XK_AudioRaiseVolume,   spawn, SHCMD("pamixer --increase 1; kill -40 $(pidof dwmblocks)") },
+    { 0, XF86XK_AudioPrev,          spawn, SHCMD("playerctl previous; kill -34 $(pidof dwmblocks)") },
+    { 0, XF86XK_AudioPlay,          spawn, SHCMD("playerctl play-pause; kill -34 $(pidof dwmblocks)") },
+    { 0, XF86XK_AudioNext,          spawn, SHCMD("playerctl next; kill -34 $(pidof dwmblocks)") },
 
     // Brightness
     { 0, XF86XK_MonBrightnessDown,  spawn, SHCMD("xbrightness.sh --decrease 5") },
@@ -219,26 +239,6 @@ static Key keys[] = {
     //{ 0, XF86XK_Search, NULL, NULL },
     //{ 0, XF86XK_RFKill, NULL, NULL },
 };
-
-/*
- * Things to bring in from i3
- *
- * Mod == Mod1 (Alt)
- * Sup == Mod4 (Win)
- *
- * Mod+Shift+j              Push master into stack
- * Mod+Shift+k              Push stack into master
- *
- * Mod+Shift+F11            Toggle Fullscreen
- * Mod+Shift+Backslash      Cycle Layouts
- *
- * Sup+Return               Show Scratchpad
- * Sup+Shift+Return         Move application to Scratchpad
- *
- * Mod+Shift+r              Restart dwm
- *
- * Function-Keys            Various Functions
- */
 
 /* button definitions */
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
