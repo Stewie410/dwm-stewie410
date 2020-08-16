@@ -82,7 +82,29 @@ static const Rule rules[] = {
 	 */
     // class        instance,   title,          tag,    center  float,  term,   noswallow,  monitor
     { "Gimp",       NULL,       NULL,           0,      0,      0,      0,      0,          -1 },
-    { "Firefox",    NULL,       NULL,           1 << 8, 0,      0,      0,      1,          -1 },
+
+    // Browsers
+    { "firefox",    NULL,       NULL,           1 << 1, 0,      0,      0,      1,          -1 },
+    //{ "brave-browser", NULL,    NULL,           1 << 1, 0,      0,      0,      1,          -1 },
+
+    // Dev
+    { "code-oss",   NULL,       NULL,           1 << 4, 0,      0,      0,      1,          -1 },
+
+    // Security
+    { "Keepassx2",  NULL,       NULL,           1 << 5, 0,      0,      0,      1,          -1 },
+    { "Clamtk",     NULL,       NULL,           1 << 5, 0,      0,      0,      1,          -1 },
+    { "Gufw.py",    NULL,       NULL,           1 << 5, 0,      0,      0,      1,          -1 },
+
+    // Social
+    { "Caprine",    NULL,       NULL,           1 << 6, 0,      0,      0,      1,          -1 },
+    { "Telegram",   NULL,       NULL,           1 << 6, 0,      0,      0,      1,          -1 },
+    { "discord",    NULL,       NULL,           1 << 6, 0,      0,      0,      1,          -1 },
+    { "Rocket.Chat", NULL,      NULL,           1 << 6, 0,      0,      0,      1,          -1 },
+
+    // Media
+    { "Spotify",    NULL,       NULL,           1 << 8, 0,      0,      0,      1,          -1 },
+
+    // Terminals
     { "Alacritty",  NULL,       NULL,           0,      0,      0,      1,      0,          -1 },
     { "St",         NULL,       NULL,           0,      0,      0,      1,      0,          -1 },
     { NULL,         NULL,       "Event Tester", 0,      0,      0,      0,      1,          -1 },
