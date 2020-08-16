@@ -24,7 +24,7 @@ static const char *fonts[]                  = {
     "Font Awesome 5 Free:fontformat=true:pixelsize=10:antialias=true:style=solid;3",
     "Font Awesome 5 Brands:fontformat=true:pixelsize=10:antialias=true:style=solid;3",
 };
-static const char dmenufont[]       = "Fira Code Regular:fontformat=true:pixelsize=10:antialias=true";
+static const char dmenufont[]       = "Fira Code Regular:fontformat=true:pixelsize=11:antialias=true";
 
 /* Dracula */
 static const char col_black[]       = "#292d3e";
@@ -171,7 +171,7 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_black, "-nf", col_white, "-sb", col_lblack, "-sf", col_lpurple, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, NULL };
 static const char *termcmd[]  = { "alacritty", NULL };
 
 #include <X11/XF86keysym.h>
