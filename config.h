@@ -81,8 +81,6 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
     // class        instance,   title,          tag,    center  float,  term,   noswallow,  monitor
-    { "Gimp",       NULL,       NULL,           0,      0,      0,      0,      0,          -1 },
-
     // Browsers
     { "firefox",    NULL,       NULL,           1 << 1, 0,      0,      0,      1,          -1 },
     //{ "brave-browser", NULL,    NULL,           1 << 1, 0,      0,      0,      1,          -1 },
@@ -103,6 +101,10 @@ static const Rule rules[] = {
 
     // Media
     { "Spotify",    NULL,       NULL,           1 << 8, 0,      0,      0,      1,          -1 },
+
+    // Other
+    { "Gimp",       NULL,       NULL,           0,      0,      0,      0,      0,          -1 },
+    { "Nitrogen",   NULL,       NULL,           0,      1,      1,      0,      1,          -1 },
 
     // Terminals
     { "Alacritty",  NULL,       NULL,           0,      0,      0,      1,      0,          -1 },
