@@ -26,7 +26,7 @@ static const char *fonts[]                  = {
 };
 static const char dmenufont[]       = "Fira Code Regular:fontformat=true:pixelsize=10:antialias=true";
 
-/* Colorschemes */
+/* Dracula */
 static const char col_black[]       = "#292d3e";
 static const char col_red[]         = "#f07178";
 static const char col_green[]       = "#c3e88d";
