@@ -5,10 +5,11 @@ static const unsigned int borderpx          = 1;    /* border pixel of windows *
 static const unsigned int snap              = 32;   /* snap pixel */
 static const unsigned int systraypinning    = 0;    /* Pin systray to monitor X; 0: sloppy */
 static const unsigned int systrayspacing    = 2;    /* systray spacing */
-static const unsigned int gappih            = 5;    /* horiz inner gap between windows */
-static const unsigned int gappiv            = 5;    /* vert inner gap between windows */
-static const unsigned int gappoh            = 5;    /* horiz outer gap between windows & edge */
-static const unsigned int gappov            = 5;    /* vert outer gap between windows & edge */
+static const unsigned int gapchamt          = 4;    /* Amount to inc/dec gaps */
+static const unsigned int gappih            = 4;    /* horiz inner gap between windows */
+static const unsigned int gappiv            = 4;    /* vert inner gap between windows */
+static const unsigned int gappoh            = 4;    /* horiz outer gap between windows & edge */
+static const unsigned int gappov            = 4;    /* vert outer gap between windows & edge */
 static const unsigned int smartgaps         = 1;    /* 1 means no outer gap w/ single window */
 static const int systraypinningfailfirst    = 1;    /* 1: first monitor; False: last monitor */
 static const int showsystray                = 1;    /* 0: no systtray */
@@ -83,15 +84,15 @@ static const Rule rules[] = {
     // class        instance,   title,          tag,    center  float,  term,   noswallow,  monitor
     // Browsers
     { "firefox",    NULL,       NULL,           1 << 1, 0,      0,      0,      1,          -1 },
-    //{ "brave-browser", NULL,    NULL,           1 << 1, 0,      0,      0,      1,          -1 },
+    { "brave-browser", NULL,    NULL,           0,      0,      0,      0,      1,          -1 },
 
     // Dev
     { "code-oss",   NULL,       NULL,           1 << 4, 0,      0,      0,      1,          -1 },
 
     // Security
-    { "Keepassx2",  NULL,       NULL,           1 << 5, 0,      0,      0,      1,          -1 },
-    { "Clamtk",     NULL,       NULL,           1 << 5, 0,      0,      0,      1,          -1 },
-    { "Gufw.py",    NULL,       NULL,           1 << 5, 0,      0,      0,      1,          -1 },
+    { "Keepassx2",  NULL,       NULL,           1 << 5, 1,      1,      0,      1,          -1 },
+    { "Clamtk",     NULL,       NULL,           1 << 5, 1,      1,      0,      1,          -1 },
+    { "Gufw.py",    NULL,       NULL,           1 << 5, 1,      1,      0,      1,          -1 },
 
     // Social
     { "Caprine",    NULL,       NULL,           1 << 6, 0,      0,      0,      1,          -1 },
@@ -105,6 +106,8 @@ static const Rule rules[] = {
     // Other
     { "Gimp",       NULL,       NULL,           0,      0,      0,      0,      0,          -1 },
     { "Nitrogen",   NULL,       NULL,           0,      1,      1,      0,      1,          -1 },
+    { "Wpg",        NULL,       NULL,           0,      1,      1,      0,      1,          -1 },
+    { "flameshot",  NULL,       NULL,           0,      0,      1,      0,      1,          -1 },
 
     // Terminals
     { "Alacritty",  NULL,       NULL,           0,      0,      0,      1,      0,          -1 },
@@ -193,7 +196,6 @@ static Key keys[] = {
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
     { MODKEY,                       XK_m,      focusmaster,    {0} },
     { MODKEY|ShiftMask,             XK_j,      incnmaster,     {.i = -1 } },
-
     { MODKEY|ShiftMask,             XK_k,      incnmaster,     {.i = +1 } },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
@@ -208,8 +210,8 @@ static Key keys[] = {
      * inner/outer horiz            incrihgaps/incrohgaps
      * inner/outer vert             incrivgaps/incrovgaps
      */
-    { MODKEY|SUPKEY,                XK_h,      incrgaps,       {.i = +1 } },
-    { MODKEY|SUPKEY,                XK_l,      incrgaps,       {.i = -1 } },
+    { MODKEY|SUPKEY,                XK_h,      incrgaps,       {.i = +gapchamt } },
+    { MODKEY|SUPKEY,                XK_l,      incrgaps,       {.i = -gapchamt } },
     { MODKEY|SUPKEY,                XK_g,      togglegaps,     {0} },
     { MODKEY|SUPKEY|ShiftMask,      XK_g,      defaultgaps,    {0} },
 
